@@ -23,7 +23,7 @@ class User(models.Model):
 class Listing(models.Model):
     listing_id = models.UUIDField(primary_key=True,
                                   default=uuid.uuid4, editable=False)
-    host_id = models.ForeignKey('user_id', on_delete=models.CASCADE)
+    host = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     description = models.TextField()
     location = models.CharField(max_length=250)
@@ -41,8 +41,8 @@ class Booking(models.Model):
     ]
     booking_id = models.IntegerField(primary_key=True,
                                      default=uuid.uuid4, editable=False)
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
-    listing_id = models.ForeignKey('Listing', on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -54,8 +54,8 @@ class Review(models.Model):
     RATINGS = [(x, x) for x in range(5)]
     review_id = models.IntegerField(primary_key=True,
                                     default=uuid.uuid4, editable=False)
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
-    listing_id = models.ForeignKey('Listing', on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=RATINGS)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
